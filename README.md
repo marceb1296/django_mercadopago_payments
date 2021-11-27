@@ -4,7 +4,7 @@ Integrate payments easily with Mercado Pago in your Django project!
 
 ## Clone the repository into your Django project
 
-`git clone https://github.com/marceb1296/django-mercadopago.git`
+`git clone https://github.com/marceb1296/django-mercadopago-payments.git
 
 ## In your settings.py
 
@@ -82,3 +82,6 @@ class YourView(LoginRequiredMixin, View):
         return redirect(pay_url)
 			    
 ```
+
+## Contact for any error, doubt or suggestion
+Email: marce_1996hr@hotmail.com
