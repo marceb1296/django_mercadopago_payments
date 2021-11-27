@@ -12,6 +12,7 @@ class Payment():
 			"items": [],
 			"payer": {}
 		}
+		self.prod = False
 		self.create_preference()
 	
 	
@@ -25,6 +26,7 @@ class Payment():
 		if get_token.get('test'):
 			token = get_token.get('test')
 		elif get_token.get('prod'):
+			self.prod = True
 			token = get_token.get('prod')
 		else:
 			raise LookupError('No se ha encontrado ningun token en MERCADOPAGO_TOKENS del archivo settings.py, ¿Olvidaste agregarlos?')
@@ -97,8 +99,10 @@ class Payment():
 		
 		preference_response = self.sdk.preference().create(self.preference_data)
 		preference = preference_response["response"]
-		response = preference["sandbox_init_point"]
-		
+		if self.prod:
+			response = preference["init_point"]
+		else:
+			response = preference["sandbox_init_point"]
 		return response
 	
 	
