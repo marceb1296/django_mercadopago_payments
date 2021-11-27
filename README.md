@@ -2,9 +2,9 @@
 
 Integrate payments easily with Mercado Pago in your Django project!
 
-## Clone repository into your project
+## Clone the repository into your Django project
 
-`url`
+`git clone https://github.com/marceb1296/django-mercadopago.git`
 
 ## In your settings.py
 
