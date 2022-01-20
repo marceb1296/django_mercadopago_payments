@@ -34,12 +34,17 @@ MERCADOPAGO_BACK_URLS = {
 
 #Declare this var if you want redirect the user after payment automatically
 MERCADOPAGO_AUTO_RETURN = True
+
+#Declare this var with your preferred url for receive MercadoPago payment Notifications
+# More info here https://www.mercadopago.com.mx/developers/es/guides/online-payments/checkout-pro/advanced-integration
+MERCADOPAGO_IPN = "https://www.tu-sitio/notify/IPN"
 ```
 
 ## In your views.py
 
 ```
 ...
+#Import module
 from django_mercadopago_payments.payment import Payment
 
 class YourView(LoginRequiredMixin, View):
@@ -66,9 +71,9 @@ class YourView(LoginRequiredMixin, View):
         payment.set_shipment_address(street_name="address", zip_code=11111)
 	
         #Exclude payment methods and types. You can check all exclude and types payments here https://www.mercadopago.com.mx/developers/pt/guides/resources/localization/payment-methods#bookmark_payment_means_by_country
-        methods = {'id': 'bitcoin'}
-	types = {'id': 'digital_currency'}
-	payment.exclude_payment_methods(methods=methods, types=types)
+        methods = [{'id': 'bitcoin'}]
+			  types = [{'id': 'digital_currency'}]
+        payment.exclude_payment_methods(methods=methods, types=types)
 
         #if you want set a ship cost
         ship = 1
