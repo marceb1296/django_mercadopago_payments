@@ -54,33 +54,53 @@ class Payment():
 		except:
 			pass 
 		
+		try:
+			if settings.MERCADOPAGO_IPN:
+				self.preference_data["notification_url"] = settings.MERCADOPAGO_IPN
+		except:
+			pass 
 			
 	def exclude_payment_methods(self, methods=None, types=None, installments=1):
 		
 		if methods and types:
-			self.preference_data['payment_methods'] = {
-				'excluded_payment_methods': [methods],
-				'excluded_payment_types': [types]
-			}			
+			if self.preference_data.get('payment_methods'):
+				self.preference_data['payment_methods']["excluded_payment_methods"] = methods
+				self.preference_data['payment_methods']["excluded_payment_types"] = types
+			else:				
+				self.preference_data['payment_methods'] = {
+					'excluded_payment_methods': methods,
+					'excluded_payment_types': types
+				}			
 	
 	
 	def set_installments(self, n):
-		self.preference_data['payment_methods'] = {
-				"installments": n
-		}			
+		if self.preference_data.get('payment_methods'):
+			self.preference_data['payment_methods']["installments"] = n
+						
+		else:
+			self.preference_data['payment_methods'] = {
+					"installments": n
+			}		
 	
 		
 	def set_shipments(self, ship):
 			
+		if self.preference_data.get('shipments'):
+			self.preference_data['shipments']['cost'] = ship
+			self.preference_data['shipments']['mode'] = "not_specified"
+		else:
 			self.preference_data['shipments'] = {
 				'cost': ship,
 				"mode": "not_specified"
-			}
+			}	
 	
 	
 	def set_shipment_address(self, street_name=None, zip_code=None):
 		if street_name and zip_code:
-			self.preference_data['shipments'] = {'receiver_address': {'street_name': street_name, 'zip_code': zip_code}}
+			if self.preference_data.get('shipments'):
+				self.preference_data['shipments']['receiver_address'] = {'street_name': street_name, 'zip_code': zip_code}
+			else:
+				self.preference_data['shipments'] = {'receiver_address': {'street_name': street_name, 'zip_code': zip_code}}
 		
 	
 	def set_payer_info(self, **kwargs):
