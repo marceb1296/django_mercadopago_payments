@@ -72,12 +72,11 @@ class YourView(LoginRequiredMixin, View):
 	
         #Exclude payment methods and types. You can check all exclude and types payments here https://www.mercadopago.com.mx/developers/pt/guides/resources/localization/payment-methods#bookmark_payment_means_by_country
         methods = [{'id': 'bitcoin'}]
-			  types = [{'id': 'digital_currency'}]
+	types = [{'id': 'digital_currency'}]
         payment.exclude_payment_methods(methods=methods, types=types)
 
         #if you want set a ship cost
-        ship = 1
-        payment.set_shipments(ship)
+        payment.set_shipments(n)
 
         #By default, mercadopago accept payments till 24 months
         #If you want set just 1 or till 6, just add this line 
@@ -85,8 +84,11 @@ class YourView(LoginRequiredMixin, View):
 
         #Finally, you can get payment url calling the get_url function
         pay_url = payment.get_url()
- 
+
+        #Normal post method
         return redirect(pay_url)
+        #Ajax, axio... post method
+        return JsonResponse({'pay_url': pay_url})
 			    
 ```
 
